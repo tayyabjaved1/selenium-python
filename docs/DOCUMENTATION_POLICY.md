@@ -12,6 +12,14 @@ dependency bump with no observable effect), label the PR
 currently read PR labels itself, so this is a human override recorded for
 reviewers, not a bypass the script honors automatically.
 
+## A repo's first commit is exempt
+
+`scripts/check_docs_changes.py` diffs against `HEAD^`, which does not exist
+on a repository's root commit -- the gate correctly fails closed (exit 2,
+"could not compare") rather than silently passing. This is a one-time
+bootstrap gap, not a bypass: every commit after the first has a `HEAD^` to
+diff against, and the gate applies normally from the second commit onward.
+
 ## Why centralized, not per-module
 
 `docs/MODULE_CATALOG.md` holds every module's section in one file, not a

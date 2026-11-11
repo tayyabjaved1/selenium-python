@@ -26,11 +26,16 @@ jobs:
           distribution: temurin
           java-version: "17"
       - name: Generate Allure report
+        # Not a GitHub Action (a composite Docker action building an image
+        # pinned to openjdk:8-jre-alpine, which Docker Hub has since
+        # removed, aborted the whole job before any other step ran -- GitHub
+        # Actions builds Docker actions used anywhere in the job up front).
+        # Installing the CLI directly avoids depending on that image at all.
         if: always()
-        uses: simple-elf/allure-report-action@v1.9
-        with:
-          allure_results: allure-results
-          allure_report: allure-report
+        run: |
+          curl -sSL https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz -o allure.tgz
+          tar -xzf allure.tgz
+          ./allure-2.32.0/bin/allure generate allure-results -o allure-report --clean
       - uses: actions/upload-artifact@v4
         if: always()
         with:
