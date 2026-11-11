@@ -15,3 +15,14 @@ sets these as job env vars instead (see `.github/workflows/ci.yml`).
 `behave.ini`'s `[behave.userdata]` section mirrors `base_url`/`headless`
 for discoverability from `behave --tags=...` runs, but `src/core/config.py`
 (the `.env` file) is the actual source of truth read by the code.
+
+## CI Allure report generation
+
+`.github/workflows/ci.yml` installs the Allure commandline tool directly
+via its GitHub release tarball rather than a third-party GitHub Action --
+`simple-elf/allure-report-action@v1.9`'s Docker image was pinned to
+`openjdk:8-jre-alpine`, which Docker Hub has since removed, and GitHub
+Actions builds a job's Docker-based actions before any of its own steps
+run -- so that one broken action aborted the whole job before checkout,
+`pytest`, or `behave` ever executed. A direct `curl`/`tar` install has no
+such upfront build step to fail.

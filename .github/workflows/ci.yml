@@ -20,7 +20,7 @@ jobs:
         run: behave -f allure_behave.formatter:AllureFormatter -o allure-results
         env:
           HEADLESS: "true"
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         if: always()
         with:
           distribution: temurin

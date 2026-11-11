@@ -43,7 +43,9 @@ allure serve allure-results   # requires the allure commandline tool
 ```
 
 CI generates and uploads the Allure report as a build artifact on every
-run (`.github/workflows/ci.yml`) via `simple-elf/allure-report-action`.
+run (`.github/workflows/ci.yml`), installing the `allure` commandline tool
+directly from its GitHub release rather than a third-party Docker action --
+see `docs/CONFIGURATION.md` for why.
 
 ## Layout
 
